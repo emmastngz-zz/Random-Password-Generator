@@ -9,7 +9,8 @@ from tkinter import *
 
 
 # Characters that can be used in the password
-chars = "abcdefghijklmnopqrstuvwxyz123 4567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#~€¬/"
+chars = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#~€¬/"
+
 
 def password_generator():
     global chars
@@ -20,15 +21,19 @@ def password_generator():
     # Password lenght 
     password_length.get()
     
+    password = ''
+    
     try:
         # This for generate a first password
         for p in range(int(password_number.get())):
-            password = ''
+            # password = ''
             # for nested that generate a password  
             for c in range(int(password_length.get())):
                 password += random.choice(chars)
-            # To show password
-            final_password.set(password)
+            password += '\n\n'
+        # To set password
+        final_password.set(password)
+        
     except ValueError:
        messages =  Label(root, text = "Error!: please type a integer number")
        messages.pack()
@@ -48,7 +53,7 @@ final_password = StringVar()
 pass_num = Label(root, text = "Numbers of Password")
 pass_num.pack()
 pass_num.config(font = ('times new roman', 12))
-Entry(root, justify="left", textvariable = password_number).pack()
+Entry(root, justify="center", textvariable = password_number).pack()
 
 # Label password lenght
 pass_len = Label(root, text = "Password Lenght")
@@ -60,7 +65,7 @@ Entry(root, justify="center", textvariable = password_length).pack()
 final_pass = Label(root, text = "Password")
 final_pass.pack()
 final_pass.config(font = ('times new roman', 12))
-Entry(root, justify="right", textvariable = final_password).pack()
+Entry(root, justify="center", text = final_password, state = "disabled").pack()
 
 # Create button
 gen_pass = Button(root, text = "Generate Password", justify = "center", command = password_generator)
