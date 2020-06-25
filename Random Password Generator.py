@@ -6,9 +6,13 @@ Created on Sat Jun  6 22:47:23 2020
 """
 import random 
 from tkinter import *
+import sqlite3
 
 # Characters that can be used in the password
 chars = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#~€¬/"
+
+# Object to show messages
+messages_notice = ''
 
 # Create a dynamic StringVar
 class WritablesStringVar(StringVar):
@@ -21,7 +25,10 @@ class WritablesStringVar(StringVar):
         self.set("")
 
 def password_generator():
+    
     global chars
+    
+    global messages_notice
     
     # Numbers of password to generate
     password_number.get()
@@ -49,10 +56,37 @@ def password_generator():
         
     except ValueError:
     # If the user type a not int value
-       messages =  Label(root, text = "Error!: please type a integer number")
-       messages.pack()
-       messages.config(fg = "red", font = ('times new roman', 12, 'bold'))
+       messages_notice =  Label(root, text = "Error!: please type a integer number")
+       # messages.pack() Never mix grid() and pack() in the same root widget.
+       messages_notice.config(fg = "red", font = ('times new roman', 12, 'bold'))
+       messages_notice.grid(row = 2, column = 0, sticky = W)
     
+
+# Setup data base
+def create_bd():
+    
+    global messages_notice
+    
+    conection = sqlite3.connect("password_final.db") 
+    cursor = conection.cursor()
+    
+    try:
+        cursor.execute('''
+                       CREATE TABLE passwords(
+                           id INTEGER PRIMARY KEY AUTOINCREMENT,
+                           pass VARCHAR(100) UNIQUE NOT NULL)
+                       ''')
+                       
+    except sqlite3.OperationalError:
+        messages_notice = Label(root, text = "Data base has already been created")
+        messages_notice.config(fg = "red", font = ('times new roman', 12, 'bold'))
+        messages_notice.grid(row = 2, column = 0, sticky = W)
+        
+    else:
+        messages_notice = Label(root, text = "Data base has benn created")
+        messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
+        messages_notice.grid(row = 2, column = 0, sticky = W)
+        
 # Setup root
 root = Tk()
 root.title("Random Password Generator")
@@ -101,6 +135,10 @@ gen_pass = Button(root, text = "Generate Password", justify = "center", command 
 # gen_pass.pack() Never mix grid() and pack() in the same root widget.
 gen_pass.config(font = ('times new roman', 12))
 gen_pass.grid(row = 1, column = 3, sticky = E)
-    
+
+
+# Create data base
+create_bd()
+
 # Main loop 
 root.mainloop()
