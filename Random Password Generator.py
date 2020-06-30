@@ -40,6 +40,7 @@ def password_generator():
     final_password.clear()
     
     password = ''
+    list_passwords = []
     
     try:
         # This for generate a first password
@@ -50,8 +51,10 @@ def password_generator():
                 password += random.choice(chars)
             # Show the passwords with the dynamic StringVar
             print(password, file = final_password)
+            list_passwords.append(password)
             # To avoid the characters of the last iteration
             password = ''
+        print(list_passwords)
         
         
     except ValueError:
@@ -86,6 +89,13 @@ def create_bd():
         messages_notice = Label(root, text = "Data base has benn created")
         messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
         messages_notice.grid(row = 2, column = 0, sticky = W)
+        
+    conection.close()
+    
+    
+# save data base
+def save_data_base():
+    pass
         
 # Setup root
 root = Tk()
