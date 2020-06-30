@@ -14,6 +14,10 @@ chars = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#~€¬
 # Object to show messages
 messages_notice = ''
 
+# List for passwords
+passwords_list = []
+
+
 # Create a dynamic StringVar
 class WritablesStringVar(StringVar):
     
@@ -30,6 +34,8 @@ def password_generator():
     
     global messages_notice
     
+    global list_passwords
+    
     # Numbers of password to generate
     password_number.get()
     
@@ -39,8 +45,11 @@ def password_generator():
     # To avoid the last pack of password
     final_password.clear()
     
+    # Clean password variable
     password = ''
-    list_passwords = []
+    
+    # Clean passwords list 
+    passwords_list = []
     
     try:
         # This for generate a first password
@@ -51,10 +60,10 @@ def password_generator():
                 password += random.choice(chars)
             # Show the passwords with the dynamic StringVar
             print(password, file = final_password)
-            list_passwords.append(password)
+            passwords_list.append(password)
             # To avoid the characters of the last iteration
             password = ''
-        print(list_passwords)
+        print(passwords_list)
         
         
     except ValueError:
@@ -70,8 +79,8 @@ def create_bd():
     
     global messages_notice
     
-    conection = sqlite3.connect("password_final.db") 
-    cursor = conection.cursor()
+    connection = sqlite3.connect("password_final.db") 
+    cursor = connection.cursor()
     
     try:
         cursor.execute('''
@@ -90,12 +99,35 @@ def create_bd():
         messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
         messages_notice.grid(row = 2, column = 0, sticky = W)
         
-    conection.close()
+    connection.close()
     
     
-# save data base
+# Save data base
 def save_data_base():
-    pass
+    
+    global messages_notice
+    global passwords_list
+    
+    connection = sqlite3.connect("password_final.db")
+    cursor = connection.cursor()
+    
+    # Save passwords from the list
+    try: 
+        for password in passwords_list:   
+            print(password)
+            cursor.execute("INSERT INTO passwords VALUES (null, {})".format(password))
+    
+    except:
+        messages_notice = Label(root, text = "Error! the passwords can't be saves")
+        messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
+        messages_notice.grid(row = 2, column = 0, sticky = W)
+    else:
+        messages_notice = Label(root, text = "passwords saved successfully")
+        messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
+        messages_notice.grid(row = 2, column = 0, sticky = W)
+        
+    connection.close()
+        
         
 # Setup root
 root = Tk()
@@ -146,6 +178,10 @@ gen_pass = Button(root, text = "Generate Password", justify = "center", command 
 gen_pass.config(font = ('times new roman', 12))
 gen_pass.grid(row = 1, column = 3, sticky = E)
 
+# Save button
+save_button = Button(root, text = "Save Password", justify = "center", command = save_data_base)
+save_button.config(font = ('times new roman', 12))
+save_button.grid(row = 1, column = 4, sticky = E)
 
 # Create data base
 create_bd()
