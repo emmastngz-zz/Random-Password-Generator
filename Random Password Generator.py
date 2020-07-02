@@ -34,7 +34,7 @@ def password_generator():
     
     global messages_notice
     
-    global list_passwords
+    global passwords_list
     
     # Numbers of password to generate
     password_number.get()
@@ -63,7 +63,6 @@ def password_generator():
             passwords_list.append(password)
             # To avoid the characters of the last iteration
             password = ''
-        print(passwords_list)
         
         
     except ValueError:
@@ -114,8 +113,7 @@ def save_data_base():
     # Save passwords from the list
     try: 
         for password in passwords_list:   
-            print(password)
-            cursor.execute("INSERT INTO passwords VALUES (null, {})".format(password))
+            cursor.execute("INSERT INTO passwords VALUES (null, '{}')".format(str(password)))
     
     except:
         messages_notice = Label(root, text = "Error! the passwords can't be saves")
@@ -125,7 +123,8 @@ def save_data_base():
         messages_notice = Label(root, text = "passwords saved successfully")
         messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
         messages_notice.grid(row = 2, column = 0, sticky = W)
-        
+       
+    connection.commit()
     connection.close()
         
         
