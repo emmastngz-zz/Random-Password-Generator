@@ -132,7 +132,8 @@ def save_data_base():
 root = Tk()
 root.title("Random Password Generator")
 root.iconbitmap('ink-bottle-and-a-feather-to-write_icon-icons.com_56812.ico')
-    
+root.resizable(0,0)
+ 
 # Variables
 password_number = StringVar()
 password_length = StringVar()
