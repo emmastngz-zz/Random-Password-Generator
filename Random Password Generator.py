@@ -70,7 +70,7 @@ def password_generator():
        messages_notice =  Label(root, text = "Error!: please type a integer number")
        # messages.pack() Never mix grid() and pack() in the same root widget.
        messages_notice.config(fg = "red", font = ('times new roman', 12, 'bold'))
-       messages_notice.grid(row = 2, column = 0, sticky = W)
+       messages_notice.grid(row = 4, column = 0, sticky = W)
     
 
 # Setup data base
@@ -91,12 +91,12 @@ def create_bd():
     except sqlite3.OperationalError:
         messages_notice = Label(root, text = "Data base has already been created")
         messages_notice.config(fg = "red", font = ('times new roman', 12, 'bold'))
-        messages_notice.grid(row = 2, column = 0, sticky = W)
+        messages_notice.grid(row = 4, column = 0, sticky = W)
         
     else:
         messages_notice = Label(root, text = "Data base has benn created")
         messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
-        messages_notice.grid(row = 2, column = 0, sticky = W)
+        messages_notice.grid(row = 4, column = 0, sticky = W)
         
     connection.close()
     
@@ -118,11 +118,11 @@ def save_data_base():
     except:
         messages_notice = Label(root, text = "Error! the passwords can't be saves")
         messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
-        messages_notice.grid(row = 2, column = 0, sticky = W)
+        messages_notice.grid(row = 4, column = 0, sticky = W)
     else:
         messages_notice = Label(root, text = "passwords saved successfully")
         messages_notice.config(fg= "red", font = ('times new roman', 12, 'bold'))
-        messages_notice.grid(row = 2, column = 0, sticky = W)
+        messages_notice.grid(row = 4, column = 0, sticky = W)
        
     connection.commit()
     connection.close()
@@ -143,45 +143,45 @@ final_password = WritablesStringVar(root)
 pass_num = Label(root, text = "Numbers of Password")
 # pass_num.pack() Never mix grid() and pack() in the same root widget.
 pass_num.config(font = ('times new roman', 12))
-pass_num.grid(row = 0, column = 0, sticky = W, pady = 2)
+pass_num.grid(sticky = E, padx = 2, pady = 2)
 
 # Entry password number
 entry_pass_num = Entry(root, justify="center", textvariable = password_number)
 # entry_pass_num.pack() Never mix grid() and pack() in the same root widget.
-entry_pass_num.grid(row = 1, column = 0, pady = 2)
+entry_pass_num.grid(row = 0, column = 1,padx = 2, pady = 2)
 
-# Label password lenght
+# Label password length
 pass_len = Label(root, text = "Password Lenght")
 # pass_len.pack() Never mix grid() and pack() in the same root widget.
 pass_len.config(font = ('times new roman', 12))
-pass_len.grid(row = 0, column = 1, sticky = W, pady = 2)
+pass_len.grid(sticky = E, padx = 2, pady = 2)
 
-# Entry password number
+# Entry password length
 entry_pass_len = Entry(root, justify="center", textvariable = password_length)
 # entry_pass_len.pack() Never mix grid() and pack() in the same root widget.
-entry_pass_len.grid(row = 1, column = 1, pady = 2)
+entry_pass_len.grid(row = 1, column = 1,padx = 2, pady = 2)
 
 # Label final password
-final_pass = Label(root, text = "Password")
+final_pass = Label(root, text = "\t\tPassword")
 # final_pass.pack() Never mix grid() and pack() in the same root widget.
 final_pass.config(font = ('times new roman', 12))
-final_pass.grid(row = 0, column = 2, sticky = W, pady = 2)
+final_pass.grid(row = 0, column = 2, padx = 2, pady = 2)
 
 # Label to show final password
-show_passwords = Label(root, justify="center", textvariable = final_password, relief = GROOVE)
+show_passwords = Label(root, justify="center", textvariable = final_password, relief = GROOVE, width = 20, height = 5)
 # show_passwords.pack() Never mix grid() and pack() in the same root widget.
-show_passwords.grid(row = 1, column = 2, sticky = W, pady = 2)
+show_passwords.grid(row = 1, column = 2, columnspan = 2, rowspan = 2, sticky = W + E + N + S, padx = 5, pady = 5)
 
 # Create button
-gen_pass = Button(root, text = "Generate Password", justify = "center", command = password_generator)
+gen_pass = Button(root, text = "Generate\n Password", justify = "center", command = password_generator)
 # gen_pass.pack() Never mix grid() and pack() in the same root widget.
 gen_pass.config(font = ('times new roman', 12))
-gen_pass.grid(row = 1, column = 3, sticky = E)
+gen_pass.grid(row = 3, column = 2, padx = 2, pady = 2)
 
 # Save button
 save_button = Button(root, text = "Save Password", justify = "center", command = save_data_base)
 save_button.config(font = ('times new roman', 12))
-save_button.grid(row = 1, column = 4, sticky = E)
+save_button.grid(row = 3, column = 3, padx = 2, pady = 2)
 
 # Create data base
 create_bd()
